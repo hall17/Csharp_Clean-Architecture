@@ -20,9 +20,18 @@ namespace CustomerRestApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Order>> Get()
+        public ActionResult<IEnumerable<Order>> Get([FromQuery] Filter filter)
         {
-            return _orderService.GetAllOrders();
+            try
+            {
+                return Ok(_orderService.GetFilteredOrders(filter));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+                //Ok(_orderService.GetAllOrders());
         }
         [HttpGet("{id}")]
         public ActionResult<Order> Get(int id)

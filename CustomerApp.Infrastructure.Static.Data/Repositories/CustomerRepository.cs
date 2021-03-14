@@ -79,5 +79,10 @@ namespace CustomerApp.Infrastructure.Static.Data.Repositories
             FakeDB.Customers.Remove(customer);
             return customer;
         }
+
+        public Customer ReadByIdIncludeOrders(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

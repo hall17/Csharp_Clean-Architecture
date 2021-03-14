@@ -37,13 +37,14 @@ namespace CustomerRestApi
 
             services.AddDbContext<CustomerAppContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("MSSQLConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("MSSQLConnection"))
+                         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                // .EnableSensitiveDataLogging()
             });
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
-
             services.AddMvc().AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 // Ignore never ending loop.
@@ -62,8 +63,11 @@ namespace CustomerRestApi
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var context = scope.ServiceProvider.GetService<CustomerAppContext>();
-                    DBInitializer.SeedDB(context);
+                    using (var context = scope.ServiceProvider.GetService<CustomerAppContext>())
+                    {
+                        DBInitializer.SeedDB(context);
+
+                    }
 
                 }
             }

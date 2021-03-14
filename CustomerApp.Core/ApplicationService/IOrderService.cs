@@ -22,5 +22,6 @@ namespace OrderApp.Core.ApplicationService
 
         // D
         Order DeleteOrder(int id);
+        List<Order> GetFilteredOrders(Filter filter);
     }
 }

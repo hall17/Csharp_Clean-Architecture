@@ -21,12 +21,7 @@ namespace CustomerApp.Infrastructure.Data.Repositories
             var cust = _context.Customers.Add(customer).Entity;
             _context.SaveChanges();
             return cust;
-        }
-
-        public Customer Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        }     
 
         public IEnumerable<Customer> ReadAll()
         {
@@ -35,6 +30,7 @@ namespace CustomerApp.Infrastructure.Data.Repositories
 
         public Customer ReadById(int id)
         {
+            var changeTracker = _context.ChangeTracker.Entries<Customer>();
             return _context.Customers
                 .FirstOrDefault(c => c.Id == id);
         }
@@ -49,6 +45,14 @@ namespace CustomerApp.Infrastructure.Data.Repositories
         public Customer Update(Customer customerUpdate)
         {
             throw new NotImplementedException();
+        }
+        public Customer Delete(int id)
+        {
+            /*var ordersToRemove = _context.Orders.Where(o => o.Customer.Id == id);
+            _context.RemoveRange(ordersToRemove); */
+            var customerRemoved = _context.Remove(new Customer() { Id = id }).Entity;
+            _context.SaveChanges();
+            return customerRemoved;
         }
     }
 }

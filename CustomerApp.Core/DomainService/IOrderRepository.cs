@@ -8,9 +8,10 @@ namespace OrderApp.Core.DomainService
     public interface IOrderRepository
     {
         Order Create(Order Order);
-        Order ReadById(int id);
-        IEnumerable<Order> ReadAll();
+        Order ReadByIdIncludeCustomer(int id);
+        IEnumerable<Order> ReadAll(Filter filter=null);
         Order Update(Order OrderUpdate);
         Order Delete(int id);
+        int Count();
     }
 }
